@@ -18,8 +18,10 @@ dotnet run
 
 The following endpoint should return **200 OK**:  
 ```http
-GET -> https://localhost:5001/loan
+GET -> http://localhost:5050/loans
 ```
+
+Requests require the `X-Api-Key` header (default `local-dev-key`).
 
 ## Notes  
 

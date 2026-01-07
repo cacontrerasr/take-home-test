@@ -1,4 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+
+:root {
+  --bg: #f4f0ea;
+  --bg-accent: #fef8f2;
+  --ink: #1f1c1a;
+  --muted: #6d6760;
+  --card: #ffffff;
+  --border: #e1d8cf;
+  --accent: #f46d3b;
+  --accent-soft: rgba(244, 109, 59, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
 
 html,
 body {
@@ -7,5 +22,7 @@ body {
 
 body {
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at top, var(--bg-accent), var(--bg));
 }

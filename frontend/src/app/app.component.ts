@@ -1,7 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs';
+import { API_BASE_URL } from './app.config';
+
+interface LoanView {
+  id: number;
+  amount: number;
+  currentBalance: number;
+  applicantName: string;
+  status: string;
+  createdAtUtc: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -11,30 +23,36 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  private readonly http = inject(HttpClient);
+  private readonly apiBaseUrl = inject(API_BASE_URL);
+
   displayedColumns: string[] = [
-    'loanAmount',
+    'amount',
     'currentBalance',
-    'applicant',
+    'applicantName',
     'status',
   ];
-  loans = [
-    {
-      loanAmount: 25000.00,
-      currentBalance: 18750.00,
-      applicant: 'John Doe',
-      status: 'active',
-    },
-    {
-      loanAmount: 15000.00,
-      currentBalance: 0,
-      applicant: 'Jane Smith',
-      status: 'paid',
-    },
-    {
-      loanAmount: 50000.00,
-      currentBalance: 32500.00,
-      applicant: 'Robert Johnson',
-      status: 'active',
-    },
-  ];
+  loans: LoanView[] = [];
+  isLoading = true;
+  errorMessage = '';
+
+  get totalOutstanding(): number {
+    return this.loans.reduce((sum, loan) => sum + loan.currentBalance, 0);
+  }
+
+  get activeLoans(): number {
+    return this.loans.filter((loan) => loan.status === 'active').length;
+  }
+
+  ngOnInit(): void {
+    this.http
+      .get<LoanView[]>(`${this.apiBaseUrl}/loans`)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (loans) => (this.loans = loans),
+        error: () =>
+          (this.errorMessage =
+            'No pudimos cargar los prestamos. Revisa que la API este en ejecucion.'),
+      });
+  }
 }

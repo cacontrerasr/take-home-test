@@ -81,3 +81,53 @@ Develop a **lightweight Angular app** to interact with the backend
 ## **Additional Information**
 
 Candidates are encouraged to include a `README.md` file in their repository detailing their implementation approach, any challenges they faced, features they couldn't complete, and any improvements they would make given more time. Ideally, the implementation should be completed within **two days** of starting the test.
+
+---
+
+## Guia rapido de uso
+
+### Backend (.NET 6 + EF Core + SQL Server)
+
+1. Crear un SQL Server local o usar Docker Compose (ver mas abajo).
+2. Configurar el connection string en `backend/src/Fundo.Applications.WebApi/appsettings.json` o via `ConnectionStrings__LoanDb`.
+3. Ejecutar:
+
+```sh
+cd backend/src
+dotnet restore
+dotnet run --project Fundo.Applications.WebApi
+```
+
+La API quedara disponible en `http://localhost:5050` con endpoints:
+
+- `POST /loans`
+- `GET /loans/{id}`
+- `GET /loans`
+- `POST /loans/{id}/payment`
+
+Autenticacion (bonus): enviar el header `X-Api-Key` con el valor configurado en `backend/src/Fundo.Applications.WebApi/appsettings.json` (`local-dev-key` por defecto).
+
+### Frontend (Angular)
+
+```sh
+cd frontend
+npm install
+npm start
+```
+
+El frontend se conecta a la API en `http://localhost:5050`.
+
+### Tests
+
+```sh
+cd backend/src
+dotnet test
+```
+
+### Docker Compose (API + SQL Server)
+
+```sh
+docker compose up --build
+```
+
+La API estara expuesta en `http://localhost:5050`.

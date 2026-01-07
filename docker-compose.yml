@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: 'Your_password123'
+    ports:
+      - '1433:1433'
+
+  api:
+    build:
+      context: backend/src
+      dockerfile: Fundo.Applications.WebApi/Dockerfile
+    environment:
+      ConnectionStrings__LoanDb: 'Server=sqlserver,1433;Database=LoanManagement;User Id=sa;Password=Your_password123;TrustServerCertificate=True'
+      ASPNETCORE_ENVIRONMENT: 'Development'
+    ports:
+      - '5050:5000'
+    depends_on:
+      - sqlserver
