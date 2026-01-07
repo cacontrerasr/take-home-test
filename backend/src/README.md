@@ -1,4 +1,4 @@
-## Running the Backend
+## Running the Backend (.NET 10)
 
 To build the backend, navigate to the `src` folder and run:  
 ```sh

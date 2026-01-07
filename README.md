@@ -86,7 +86,7 @@ Candidates are encouraged to include a `README.md` file in their repository deta
 
 ## Guia rapido de uso
 
-### Backend (.NET 6 + EF Core + SQL Server)
+### Backend (.NET 10 + EF Core + SQL Server)
 
 1. Crear un SQL Server local o usar Docker Compose (ver mas abajo).
 2. Configurar el connection string en `backend/src/Fundo.Applications.WebApi/appsettings.json` o via `ConnectionStrings__LoanDb`.

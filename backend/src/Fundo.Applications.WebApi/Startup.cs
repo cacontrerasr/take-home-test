@@ -14,10 +14,12 @@ namespace Fundo.Applications.WebApi
     public class Startup
     {
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _configuration = configuration;
+            _environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -29,7 +31,16 @@ namespace Fundo.Applications.WebApi
                 });
 
             services.AddDbContext<LoanDbContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("LoanDb")));
+            {
+                if (_environment.IsEnvironment("Testing"))
+                {
+                    options.UseInMemoryDatabase("LoanDbTest");
+                }
+                else
+                {
+                    options.UseSqlServer(_configuration.GetConnectionString("LoanDb"));
+                }
+            });
 
             services.Configure<ApiKeyOptions>(_configuration.GetSection(ApiKeyOptions.SectionName));
 
